@@ -1,0 +1,98 @@
+title: skill_chaos_001
+status: draft
+reference: video_examples_to_base_off_of/instagram_reel_ref.mov
+reference_profile: video_examples_to_base_off_of/instagram_reel_ref.mov
+target_duration_s: 10.52
+music:
+  mood: masculine_stadium
+  bpm_target: 118-128
+  library: epidemic_sound
+  suggested_search:
+  - soccer reel energy
+  - trap sports beat instrumental
+timeline:
+- slot: hook
+  clip: personal/video/timeline_1.mov
+  in: 14.35
+  out: 15.06
+  duration_s: 0.71
+  effect: smash_zoom
+  text: he said easy
+- slot: beat_1
+  clip: personal/video/timeline_1.mov
+  in: 39.1
+  out: 39.81
+  duration_s: 0.71
+  effect: hard_cut
+- slot: beat_2
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hard_cut
+- slot: beat_3
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hard_cut
+- slot: beat_4
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hard_cut
+- slot: payoff
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hold
+- slot: beat_extra_6
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hard_cut
+- slot: beat_extra_7
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hard_cut
+- slot: beat_extra_8
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hard_cut
+- slot: beat_extra_9
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hard_cut
+- slot: beat_extra_10
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hard_cut
+- slot: beat_extra_11
+  clip: personal/video/timeline_1.mov
+  in: 31.85
+  out: 32.56
+  duration_s: 0.71
+  effect: hard_cut
+- slot: outro
+  asset: assets/outro/outro_master_2s.mov
+  duration_s: 2.0
+  text: Soccer x Scripture
+  effect: hard_cut
+quality_rules:
+  min_shot_s: 0.4
+  max_shot_s: 2.5
+  no_mid_action_cuts: true
+  outro_required: true
+caption_template: "{hook_line}\n\nWe plan. God laughs. \u2014 Proverbs 16:9\n\nTag\
+  \ a teammate who said \"easy\"\n\nSoccer x Scripture"

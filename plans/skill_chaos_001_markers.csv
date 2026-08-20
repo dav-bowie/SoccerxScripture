@@ -1,0 +1,14 @@
+frame,color,name,note,duration_s
+0,Blue,hook,TEXT: he said easy | EFFECT: smash_zoom,0.71
+21,Green,beat_1,EFFECT: hard_cut,0.71
+42,Green,beat_2,EFFECT: hard_cut,0.71
+63,Green,beat_3,EFFECT: hard_cut,0.71
+85,Green,beat_4,EFFECT: hard_cut,0.71
+106,Green,payoff,EFFECT: hold,0.71
+127,Green,beat_extra_6,EFFECT: hard_cut,0.71
+149,Green,beat_extra_7,EFFECT: hard_cut,0.71
+170,Green,beat_extra_8,EFFECT: hard_cut,0.71
+191,Green,beat_extra_9,EFFECT: hard_cut,0.71
+213,Green,beat_extra_10,EFFECT: hard_cut,0.71
+234,Green,beat_extra_11,EFFECT: hard_cut,0.71
+255,Blue,outro,TEXT: Soccer x Scripture | EFFECT: hard_cut,2.0
