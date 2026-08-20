@@ -1,0 +1,14 @@
+slot,clip_path,in_s,out_s,duration_s,effect,text,timeline_start_s
+hook,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,14.35,15.06,0.71,smash_zoom,he said easy,0.0
+beat_1,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,39.1,39.81,0.71,hard_cut,,0.71
+beat_2,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hard_cut,,1.42
+beat_3,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hard_cut,,2.13
+beat_4,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hard_cut,,2.84
+payoff,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hold,,3.55
+beat_extra_6,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hard_cut,,4.26
+beat_extra_7,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hard_cut,,4.97
+beat_extra_8,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hard_cut,,5.68
+beat_extra_9,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hard_cut,,6.39
+beat_extra_10,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hard_cut,,7.1
+beat_extra_11,/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov,31.85,32.56,0.71,hard_cut,,7.81
+outro,/Users/db/Desktop/SoccerxScripture/assets/outro/outro_master_2s.mov,0,2.0,2.0,hard_cut,Soccer x Scripture,8.52

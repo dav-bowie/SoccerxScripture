@@ -1,0 +1,424 @@
+{
+  "reference": "video_examples_to_base_off_of/instagram_reel_ref.mov",
+  "duration_s": 29.995,
+  "target_duration_s": "25-30",
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "fps": 59.94,
+  "hook": {
+    "type": "impact_first",
+    "window_s": "0.0-1.2"
+  },
+  "cut_rhythm": {
+    "cut_times_s": [
+      0.0,
+      0.784,
+      1.652,
+      2.336,
+      3.136,
+      4.021,
+      4.938,
+      5.722,
+      6.49,
+      6.907,
+      7.474,
+      8.342,
+      9.142,
+      9.943,
+      10.744,
+      11.311,
+      11.828,
+      12.512,
+      13.197,
+      13.83,
+      14.264,
+      14.815,
+      15.115,
+      15.432,
+      16.083,
+      16.5,
+      17.084,
+      17.701,
+      18.402,
+      18.819,
+      19.486,
+      20.204,
+      20.871,
+      21.471,
+      22.039,
+      22.506,
+      25.192,
+      25.709,
+      26.426,
+      26.727,
+      27.261,
+      27.661,
+      29.913
+    ],
+    "shot_lengths_s": [
+      0.784,
+      0.868,
+      0.684,
+      0.8,
+      0.885,
+      0.917,
+      0.784,
+      0.768,
+      0.417,
+      0.567,
+      0.868,
+      0.8,
+      0.801,
+      0.801,
+      0.567,
+      0.517,
+      0.684,
+      0.685,
+      0.633,
+      0.434,
+      0.551,
+      0.3,
+      0.317,
+      0.651,
+      0.417,
+      0.584,
+      0.617,
+      0.701,
+      0.417,
+      0.667,
+      0.718,
+      0.667,
+      0.6,
+      0.568,
+      0.467,
+      2.686,
+      0.517,
+      0.717,
+      0.301,
+      0.534,
+      0.4,
+      2.252
+    ],
+    "avg_shot_length_s": 0.712,
+    "pattern": "rapid_montage",
+    "shot_count": 42
+  },
+  "energy_curve": [
+    "mid",
+    "mid",
+    "low",
+    "high",
+    "high",
+    "low",
+    "high",
+    "mid",
+    "mid",
+    "mid",
+    "high",
+    "high",
+    "low",
+    "high",
+    "high",
+    "high",
+    "low",
+    "mid",
+    "mid",
+    "low",
+    "mid",
+    "low",
+    "low",
+    "mid",
+    "high",
+    "high",
+    "low",
+    "mid",
+    "high",
+    "mid",
+    "low",
+    "mid",
+    "mid",
+    "high",
+    "mid",
+    "high",
+    "high",
+    "mid",
+    "mid",
+    "mid",
+    "low",
+    "mid",
+    "mid",
+    "mid",
+    "high",
+    "mid",
+    "low",
+    "mid",
+    "mid",
+    "mid",
+    "low",
+    "mid",
+    "high",
+    "low",
+    "low",
+    "low",
+    "mid",
+    "mid",
+    "low",
+    "mid",
+    "mid"
+  ],
+  "motion_samples": [
+    {
+      "time_s": 0.484,
+      "motion": 0.2233
+    },
+    {
+      "time_s": 0.968,
+      "motion": 0.2645
+    },
+    {
+      "time_s": 1.451,
+      "motion": 0.0594
+    },
+    {
+      "time_s": 1.935,
+      "motion": 0.321
+    },
+    {
+      "time_s": 2.419,
+      "motion": 0.323
+    },
+    {
+      "time_s": 2.903,
+      "motion": 0.0833
+    },
+    {
+      "time_s": 3.387,
+      "motion": 0.2838
+    },
+    {
+      "time_s": 3.871,
+      "motion": 0.2057
+    },
+    {
+      "time_s": 4.354,
+      "motion": 0.2418
+    },
+    {
+      "time_s": 4.838,
+      "motion": 0.2043
+    },
+    {
+      "time_s": 5.322,
+      "motion": 0.2762
+    },
+    {
+      "time_s": 5.806,
+      "motion": 0.2675
+    },
+    {
+      "time_s": 6.29,
+      "motion": 0.0981
+    },
+    {
+      "time_s": 6.773,
+      "motion": 0.5851
+    },
+    {
+      "time_s": 7.257,
+      "motion": 0.379
+    },
+    {
+      "time_s": 7.741,
+      "motion": 0.3741
+    },
+    {
+      "time_s": 8.225,
+      "motion": 0.134
+    },
+    {
+      "time_s": 8.709,
+      "motion": 0.2091
+    },
+    {
+      "time_s": 9.193,
+      "motion": 0.23
+    },
+    {
+      "time_s": 9.676,
+      "motion": 0.1486
+    },
+    {
+      "time_s": 10.16,
+      "motion": 0.2428
+    },
+    {
+      "time_s": 10.644,
+      "motion": 0.1154
+    },
+    {
+      "time_s": 11.128,
+      "motion": 0.1425
+    },
+    {
+      "time_s": 11.612,
+      "motion": 0.218
+    },
+    {
+      "time_s": 12.095,
+      "motion": 0.3024
+    },
+    {
+      "time_s": 12.579,
+      "motion": 0.2977
+    },
+    {
+      "time_s": 13.063,
+      "motion": 0.1305
+    },
+    {
+      "time_s": 13.547,
+      "motion": 0.2422
+    },
+    {
+      "time_s": 14.031,
+      "motion": 0.2658
+    },
+    {
+      "time_s": 14.514,
+      "motion": 0.2258
+    }
+  ],
+  "audio_samples": [
+    {
+      "time_s": 0.0,
+      "audio_rms": 0.0183
+    },
+    {
+      "time_s": 1.493,
+      "audio_rms": 0.0554
+    },
+    {
+      "time_s": 2.987,
+      "audio_rms": 0.0657
+    },
+    {
+      "time_s": 4.48,
+      "audio_rms": 0.0855
+    },
+    {
+      "time_s": 5.973,
+      "audio_rms": 0.0713
+    },
+    {
+      "time_s": 7.467,
+      "audio_rms": 0.063
+    },
+    {
+      "time_s": 8.96,
+      "audio_rms": 0.1174
+    },
+    {
+      "time_s": 10.453,
+      "audio_rms": 0.0764
+    },
+    {
+      "time_s": 11.947,
+      "audio_rms": 0.0934
+    },
+    {
+      "time_s": 13.44,
+      "audio_rms": 0.1479
+    },
+    {
+      "time_s": 14.933,
+      "audio_rms": 0.1151
+    },
+    {
+      "time_s": 16.427,
+      "audio_rms": 0.1896
+    },
+    {
+      "time_s": 17.92,
+      "audio_rms": 0.1847
+    },
+    {
+      "time_s": 19.413,
+      "audio_rms": 0.1342
+    },
+    {
+      "time_s": 20.907,
+      "audio_rms": 0.1444
+    },
+    {
+      "time_s": 22.4,
+      "audio_rms": 0.1839
+    },
+    {
+      "time_s": 23.893,
+      "audio_rms": 0.1567
+    },
+    {
+      "time_s": 25.387,
+      "audio_rms": 0.1381
+    },
+    {
+      "time_s": 26.88,
+      "audio_rms": 0.1271
+    },
+    {
+      "time_s": 28.373,
+      "audio_rms": 0.171
+    }
+  ],
+  "transitions": [
+    "hard_cut"
+  ],
+  "music": {
+    "bpm_estimate": 123,
+    "mood": [
+      "masculine",
+      "stadium"
+    ],
+    "energy": "steady",
+    "library": "epidemic_sound",
+    "suggested_search": [
+      "soccer reel energy",
+      "trap sports beat instrumental"
+    ]
+  },
+  "theme": "skill_vs_chaos",
+  "interesting_segments": [
+    {
+      "start": 1.535,
+      "end": 2.535,
+      "reason": "impact moment",
+      "score": 0.642
+    },
+    {
+      "start": 2.019,
+      "end": 3.019,
+      "reason": "impact moment",
+      "score": 0.646
+    },
+    {
+      "start": 6.373,
+      "end": 7.373,
+      "reason": "impact moment",
+      "score": 1.1702
+    },
+    {
+      "start": 6.857,
+      "end": 7.857,
+      "reason": "impact moment",
+      "score": 0.758
+    },
+    {
+      "start": 7.341,
+      "end": 8.341,
+      "reason": "impact moment",
+      "score": 0.7482
+    }
+  ]
+}

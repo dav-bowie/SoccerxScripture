@@ -1,0 +1,48 @@
+{
+  "source_dir": "personal/video",
+  "clip_count": 1,
+  "skipped_count": 0,
+  "quality_threshold": 0.35,
+  "clips": [
+    {
+      "path": "personal/video/timeline_1.mov",
+      "absolute_path": "/Users/db/Desktop/SoccerxScripture/personal/video/timeline_1.mov",
+      "duration_s": 46.869,
+      "width": 1080,
+      "height": 1920,
+      "fps": 60.0,
+      "orientation": "vertical",
+      "crop_safe": true,
+      "quality_score": 0.8767,
+      "tags": [
+        "high_quality",
+        "reaction",
+        "reaction_smug",
+        "face_closeup"
+      ],
+      "best_segments": [
+        {
+          "start": 14.35,
+          "end": 15.35,
+          "reason": "energy peak",
+          "score": 0.2972
+        },
+        {
+          "start": 31.85,
+          "end": 32.85,
+          "reason": "energy peak",
+          "score": 0.2426
+        },
+        {
+          "start": 39.1,
+          "end": 40.1,
+          "reason": "energy peak",
+          "score": 0.2594
+        }
+      ],
+      "audio_usability": "dialogue",
+      "usable": true
+    }
+  ],
+  "skipped": []
+}

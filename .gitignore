@@ -1,0 +1,49 @@
+# Personal footage (never commit raw video)
+personal/video/
+personal/images/
+*.mp4
+*.mov
+*.m4v
+*.avi
+*.mkv
+*.MP4
+*.MOV
+
+# Exports
+export/
+
+# Reference examples (user-provided, often large)
+video_examples_to_base_off_of/*.mp4
+video_examples_to_base_off_of/*.mov
+video_examples_to_base_off_of/*.m4v
+
+# Outro master (binary; keep spec in docs)
+assets/outro/*.mov
+assets/outro/*.mp4
+
+# Music files
+assets/music/*.mp3
+assets/music/*.wav
+assets/music/*.aac
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+
+# Analysis cache
+analysis/cache/
+../SoccerxScripture-media/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Resolve
+*.drp
+*.dra
