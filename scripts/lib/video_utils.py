@@ -39,6 +39,22 @@ EXPORT_AUDIO_BITRATE = "192k"
 EXPORT_PROFILE = "high"
 
 
+def _parse_frame_rate(rate: str | None) -> float | None:
+    """Parse ffprobe frame rate like '60/1' or '60000/1001'."""
+    if not rate or rate in {"0/0", "N/A"}:
+        return None
+    parts = rate.split("/")
+    try:
+        if len(parts) == 2:
+            num, den = float(parts[0]), float(parts[1])
+            if den == 0:
+                return None
+            return num / den
+        return float(parts[0])
+    except (TypeError, ValueError):
+        return None
+
+
 def fps_near_target(fps: float, tolerance: float = 1.0) -> bool:
     """True if fps is ~60 or common 59.94 NTSC variant."""
     if abs(fps - FPS) <= tolerance:
@@ -111,11 +127,15 @@ def video_metadata(path: Path) -> dict[str, Any]:
         if not vstream:
             raise ValueError(f"No video stream in {path}")
 
-        duration = float(probe["format"].get("duration", 0))
+        duration = float(probe["format"].get("duration", 0) or 0)
         width = int(vstream.get("width", 0))
         height = int(vstream.get("height", 0))
-        fps_parts = vstream.get("r_frame_rate", f"{FPS}/1").split("/")
-        fps = float(fps_parts[0]) / float(fps_parts[1]) if len(fps_parts) == 2 else float(FPS)
+        # Prefer avg_frame_rate (actual) over r_frame_rate (container hint)
+        fps = _parse_frame_rate(vstream.get("avg_frame_rate")) or _parse_frame_rate(
+            vstream.get("r_frame_rate")
+        )
+        if not fps or fps <= 0:
+            fps = float(FPS)
     except Exception:
         return _video_metadata_opencv(path)
 

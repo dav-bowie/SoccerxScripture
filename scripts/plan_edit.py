@@ -303,7 +303,16 @@ def main() -> None:
     out = args.output or PLANS_DIR / f"{args.plan_id}.yaml"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(yaml.dump(recipe, default_flow_style=False, sort_keys=False))
+
+    status_path = out.with_suffix(".status")
+    status_path.write_text(
+        "status: draft\n"
+        f"created_at: {__import__('datetime').date.today().isoformat()}\n"
+        "note: Review in DaVinci Resolve before changing to approved\n"
+    )
+
     print(f"Recipe written: {out}")
+    print(f"  Status: {status_path} (draft — approve after Resolve review)")
     print(f"  Timeline slots: {len(recipe['timeline'])}")
     print(f"  Target duration: {recipe['target_duration_s']}s")
 

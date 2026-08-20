@@ -7,6 +7,8 @@
     "height": 1920
   },
   "fps": 59.94,
+  "target_fps": 60,
+  "fps_match_target": true,
   "hook": {
     "type": "impact_first",
     "window_s": "0.0-1.2"
@@ -293,83 +295,83 @@
   "audio_samples": [
     {
       "time_s": 0.0,
-      "audio_rms": 0.0183
+      "audio_rms": 0.0
     },
     {
       "time_s": 1.493,
-      "audio_rms": 0.0554
+      "audio_rms": 0.067
     },
     {
       "time_s": 2.987,
-      "audio_rms": 0.0657
+      "audio_rms": 0.0734
     },
     {
       "time_s": 4.48,
-      "audio_rms": 0.0855
+      "audio_rms": 0.0972
     },
     {
       "time_s": 5.973,
-      "audio_rms": 0.0713
+      "audio_rms": 0.082
     },
     {
       "time_s": 7.467,
-      "audio_rms": 0.063
+      "audio_rms": 0.0646
     },
     {
       "time_s": 8.96,
-      "audio_rms": 0.1174
+      "audio_rms": 0.0945
     },
     {
       "time_s": 10.453,
-      "audio_rms": 0.0764
+      "audio_rms": 0.0855
     },
     {
       "time_s": 11.947,
-      "audio_rms": 0.0934
+      "audio_rms": 0.0993
     },
     {
       "time_s": 13.44,
-      "audio_rms": 0.1479
+      "audio_rms": 0.1283
     },
     {
       "time_s": 14.933,
-      "audio_rms": 0.1151
+      "audio_rms": 0.1358
     },
     {
       "time_s": 16.427,
-      "audio_rms": 0.1896
+      "audio_rms": 0.1755
     },
     {
       "time_s": 17.92,
-      "audio_rms": 0.1847
+      "audio_rms": 0.1897
     },
     {
       "time_s": 19.413,
-      "audio_rms": 0.1342
+      "audio_rms": 0.1321
     },
     {
       "time_s": 20.907,
-      "audio_rms": 0.1444
+      "audio_rms": 0.1422
     },
     {
       "time_s": 22.4,
-      "audio_rms": 0.1839
+      "audio_rms": 0.1797
     },
     {
       "time_s": 23.893,
-      "audio_rms": 0.1567
+      "audio_rms": 0.1706
     },
     {
       "time_s": 25.387,
-      "audio_rms": 0.1381
+      "audio_rms": 0.1482
     },
     {
       "time_s": 26.88,
-      "audio_rms": 0.1271
+      "audio_rms": 0.1375
     },
     {
       "time_s": 28.373,
-      "audio_rms": 0.171
+      "audio_rms": 0.1772
     }
   ],
   "transitions": [
