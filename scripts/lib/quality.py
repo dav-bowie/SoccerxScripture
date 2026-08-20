@@ -9,6 +9,12 @@ import cv2
 import numpy as np
 
 from scripts.lib.analysis import find_peaks, motion_energy_curve
+from scripts.lib.video_utils import (
+    MIN_SHORT_EDGE,
+    PREFERRED_SHORT_EDGE,
+    TARGET_HEIGHT,
+    TARGET_WIDTH,
+)
 
 
 def blur_score(frame: np.ndarray) -> float:
@@ -29,9 +35,43 @@ def exposure_score(frame: np.ndarray) -> float:
     return 1.0
 
 
-def sample_quality(path: Path, num_samples: int = 8) -> float:
+def resolution_score(width: int, height: int) -> float:
+    """Score resolution; reject sub-720p, prefer 1080×1920 vertical."""
+    if width <= 0 or height <= 0:
+        return 0.0
+
+    short = min(width, height)
+    long = max(width, height)
+
+    if short < MIN_SHORT_EDGE:
+        return 0.0
+    if short < PREFERRED_SHORT_EDGE:
+        # Between 720 and 1080 — usable but heavily penalized
+        return round(0.25 + 0.35 * ((short - MIN_SHORT_EDGE) / (PREFERRED_SHORT_EDGE - MIN_SHORT_EDGE)), 4)
+
+    # At or above preferred short edge
+    score = 0.85
+    if short >= TARGET_WIDTH and long >= TARGET_HEIGHT:
+        score = 1.0
+    elif short >= PREFERRED_SHORT_EDGE:
+        score = 0.9
+    return score
+
+
+def sample_quality(path: Path, num_samples: int = 8, width: int | None = None, height: int | None = None) -> float:
+    """Composite quality: sharpness/exposure × resolution gate."""
     cap = cv2.VideoCapture(str(path))
     if not cap.isOpened():
+        return 0.0
+
+    if width is None:
+        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH) or 0)
+    if height is None:
+        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) or 0)
+
+    res = resolution_score(width, height)
+    if res <= 0.0:
+        cap.release()
         return 0.0
 
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
@@ -56,7 +96,9 @@ def sample_quality(path: Path, num_samples: int = 8) -> float:
     if not blur_scores:
         return 0.0
 
-    return round(float(np.mean(blur_scores) * 0.7 + np.mean(exposure_scores) * 0.3), 4)
+    visual = float(np.mean(blur_scores) * 0.7 + np.mean(exposure_scores) * 0.3)
+    # Resolution is a hard multiplier so sub-1080 never looks "high quality"
+    return round(visual * (0.55 + 0.45 * res), 4)
 
 
 def infer_tags(path: Path, motion: list[dict[str, Any]], quality: float) -> list[str]:

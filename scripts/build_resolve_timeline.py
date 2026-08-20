@@ -12,7 +12,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from scripts.lib.video_utils import PLANS_DIR, PROJECT_ROOT
+from scripts.lib.video_utils import FPS, PLANS_DIR, PROJECT_ROOT, TARGET_HEIGHT, TARGET_WIDTH
 
 
 def load_recipe(path: Path) -> dict:
@@ -56,7 +56,7 @@ def build_edl(recipe: dict, out_path: Path) -> None:
 
 def build_markers(recipe: dict, out_path: Path) -> None:
     rows = [["frame", "color", "name", "note", "duration_s"]]
-    fps = 30
+    fps = int(recipe.get("fps") or FPS)
     cursor = 0.0
 
     for item in recipe.get("timeline", []):
@@ -115,9 +115,11 @@ def build_resolve_script(recipe: dict, out_path: Path, edl_path: Path, markers_p
                 }
             )
 
+    fps = int(recipe.get("fps") or FPS)
     script = f'''#!/usr/bin/env python3
 """
 DaVinci Resolve timeline builder for: {title}
+Timeline: {TARGET_WIDTH}x{TARGET_HEIGHT} @ {fps}fps
 Run with Resolve open and a project loaded.
 
 Usage (Resolve must be running):
@@ -136,7 +138,18 @@ media_pool = project.GetMediaPool()
 root = media_pool.GetRootFolder()
 
 TIMELINE_NAME = "{title}"
+TIMELINE_FPS = {fps}
+TIMELINE_WIDTH = {TARGET_WIDTH}
+TIMELINE_HEIGHT = {TARGET_HEIGHT}
 TIMELINE_ITEMS = {repr(timeline_items)}
+
+# Prefer project settings matching export targets
+try:
+    project.SetSetting("timelineFrameRate", str(TIMELINE_FPS))
+    project.SetSetting("timelineResolutionWidth", str(TIMELINE_WIDTH))
+    project.SetSetting("timelineResolutionHeight", str(TIMELINE_HEIGHT))
+except Exception:
+    pass
 
 timeline = None
 for i in range(1, project.GetTimelineCount() + 1):
@@ -154,7 +167,7 @@ media_pool.SetCurrentFolder(root)
 for item in TIMELINE_ITEMS:
     media_pool.ImportMedia([item["path"]])
 
-print(f"Timeline '{{TIMELINE_NAME}}' ready.")
+print(f"Timeline '{{TIMELINE_NAME}}' ready ({{TIMELINE_WIDTH}}x{{TIMELINE_HEIGHT}} @ {{TIMELINE_FPS}}fps).")
 print("Import clips from EDL if auto-append fails:")
 print("  {edl_path}")
 print("Markers file:")

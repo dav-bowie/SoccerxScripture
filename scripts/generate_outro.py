@@ -13,15 +13,24 @@ from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from scripts.lib.video_utils import OUTRO_PATH, ffmpeg_bin
+from scripts.lib.video_utils import (
+    EXPORT_AUDIO_BITRATE,
+    EXPORT_AUDIO_SAMPLE_RATE,
+    EXPORT_PROFILE,
+    EXPORT_VIDEO_BITRATE_MBPS,
+    FPS,
+    OUTRO_PATH,
+    TARGET_HEIGHT,
+    TARGET_WIDTH,
+    ffmpeg_bin,
+)
 
 BG_COLOR = (13, 59, 71)  # #0D3B47
 TEXT_COLOR = (212, 175, 55)  # #D4AF37
 FONT_SIZE = 72
 DURATION = 2.0
-WIDTH = 1080
-HEIGHT = 1920
-FPS = 30
+WIDTH = TARGET_WIDTH
+HEIGHT = TARGET_HEIGHT
 TEXT = "Soccer x Scripture"
 
 
@@ -68,26 +77,32 @@ def generate_outro(output: Path) -> None:
         "-f",
         "lavfi",
         "-i",
-        f"anullsrc=r=48000:cl=stereo:d={DURATION}",
+        f"anullsrc=r={EXPORT_AUDIO_SAMPLE_RATE}:cl=stereo:d={DURATION}",
         "-c:v",
         "libx264",
+        "-profile:v",
+        EXPORT_PROFILE,
         "-pix_fmt",
         "yuv420p",
         "-r",
         str(FPS),
+        "-b:v",
+        f"{EXPORT_VIDEO_BITRATE_MBPS}M",
         "-t",
         str(DURATION),
         "-c:a",
         "aac",
+        "-ar",
+        str(EXPORT_AUDIO_SAMPLE_RATE),
         "-b:a",
-        "192k",
+        EXPORT_AUDIO_BITRATE,
         "-shortest",
         str(output),
     ]
 
     subprocess.run(cmd, check=True)
     frame.unlink(missing_ok=True)
-    print(f"Outro generated: {output}")
+    print(f"Outro generated: {output} ({WIDTH}x{HEIGHT} @ {FPS}fps)")
 
 
 def main() -> None:

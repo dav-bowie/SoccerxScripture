@@ -49,7 +49,9 @@ export/reels/                    ← final exports (gitignored)
 
 - Every video ends with **Soccer x Scripture** (2s outro, identical every time)
 - Target length: **10–30 seconds** including outro
-- Export: **1080×1920**, H.264, 30fps
+- Film and export source at **60fps**; pipeline timelines/markers assume 60fps
+- Export: **1080×1920**, H.264 High, **60fps**, ~12–20 Mbps, AAC 48kHz
+- Prefer native 1080×1920; sub-720p clips are rejected by the indexer
 - Nothing exports until you approve the recipe in Resolve
 
 See [docs/resolve-workflow.md](docs/resolve-workflow.md) and [docs/quality-checklist.md](docs/quality-checklist.md).

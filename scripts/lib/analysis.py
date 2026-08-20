@@ -10,6 +10,8 @@ import librosa
 import numpy as np
 from scenedetect import ContentDetector, SceneManager, open_video
 
+from scripts.lib.video_utils import FPS
+
 
 def detect_scenes(path: Path, threshold: float = 27.0) -> list[float]:
     video = open_video(str(path))
@@ -34,7 +36,7 @@ def motion_energy_curve(path: Path, sample_interval: float = 0.5) -> list[dict[s
     if not cap.isOpened():
         return []
 
-    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    fps = cap.get(cv2.CAP_PROP_FPS) or float(FPS)
     frame_step = max(1, int(fps * sample_interval))
     prev_gray = None
     points: list[dict[str, Any]] = []

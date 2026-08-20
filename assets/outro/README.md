@@ -9,6 +9,9 @@ The master outro is generated programmatically and can be refined in DaVinci Res
 | Text | Soccer x Scripture |
 | Duration | 2.0 seconds |
 | Resolution | 1080×1920 (9:16) |
+| Frame rate | 60fps |
+| Codec | H.264 High, ~16 Mbps |
+| Audio | AAC 48kHz (silent bed) |
 | Background | Dark teal `#0D3B47` |
 | Text color | Gold `#D4AF37` |
 | Font | Georgia / serif display |

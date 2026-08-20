@@ -21,7 +21,37 @@ MAX_VIDEO_DURATION = 30.0
 OUTRO_DURATION = 2.0
 MIN_SHOT_S = 0.4
 MAX_SHOT_S = 2.5
-QUALITY_THRESHOLD = 0.35
+
+# Timeline / export targets (vertical Reels)
+FPS = 60
+TARGET_WIDTH = 1080
+TARGET_HEIGHT = 1920
+MIN_SHORT_EDGE = 720  # below this → reject / score 0
+PREFERRED_SHORT_EDGE = 1080
+QUALITY_THRESHOLD = 0.55
+
+# H.264 High @ 1080p60 — higher bitrate than 30fps exports
+EXPORT_VIDEO_BITRATE_MBPS = 16
+EXPORT_BITRATE_MBPS_MIN = 12
+EXPORT_BITRATE_MBPS_MAX = 20
+EXPORT_AUDIO_SAMPLE_RATE = 48000
+EXPORT_AUDIO_BITRATE = "192k"
+EXPORT_PROFILE = "high"
+
+
+def fps_near_target(fps: float, tolerance: float = 1.0) -> bool:
+    """True if fps is ~60 or common 59.94 NTSC variant."""
+    if abs(fps - FPS) <= tolerance:
+        return True
+    if abs(fps - 59.94) <= 0.1:
+        return True
+    return False
+
+
+def export_bitrate_kbps(mbps: float | None = None) -> int:
+    rate = EXPORT_VIDEO_BITRATE_MBPS if mbps is None else mbps
+    rate = max(EXPORT_BITRATE_MBPS_MIN, min(EXPORT_BITRATE_MBPS_MAX, rate))
+    return int(rate * 1000)
 
 
 def ffmpeg_bin() -> str:
@@ -84,13 +114,13 @@ def video_metadata(path: Path) -> dict[str, Any]:
         duration = float(probe["format"].get("duration", 0))
         width = int(vstream.get("width", 0))
         height = int(vstream.get("height", 0))
-        fps_parts = vstream.get("r_frame_rate", "30/1").split("/")
-        fps = float(fps_parts[0]) / float(fps_parts[1]) if len(fps_parts) == 2 else 30.0
+        fps_parts = vstream.get("r_frame_rate", f"{FPS}/1").split("/")
+        fps = float(fps_parts[0]) / float(fps_parts[1]) if len(fps_parts) == 2 else float(FPS)
     except Exception:
         return _video_metadata_opencv(path)
 
     orientation = "vertical" if height > width else "horizontal" if width > height else "square"
-    crop_safe = orientation == "vertical" or min(width, height) >= 1080
+    crop_safe = orientation == "vertical" or min(width, height) >= PREFERRED_SHORT_EDGE
 
     try:
         rel = str(path.relative_to(PROJECT_ROOT))
@@ -118,13 +148,13 @@ def _video_metadata_opencv(path: Path) -> dict[str, Any]:
 
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    fps = cap.get(cv2.CAP_PROP_FPS) or float(FPS)
     frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
     duration = frames / fps if fps else 0
     cap.release()
 
     orientation = "vertical" if height > width else "horizontal" if width > height else "square"
-    crop_safe = orientation == "vertical" or min(width, height) >= 1080
+    crop_safe = orientation == "vertical" or min(width, height) >= PREFERRED_SHORT_EDGE
 
     try:
         rel = str(path.relative_to(PROJECT_ROOT))

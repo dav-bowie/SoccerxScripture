@@ -30,10 +30,13 @@ Review every edit in DaVinci Resolve before export. Mark the plan `approved` in 
 
 ## Technical
 
-- [ ] Timeline: 1080×1920, 9:16
+- [ ] Timeline: 1080×1920, 9:16, **60fps**
+- [ ] Source clips filmed/exported at 60fps (indexer warns if not)
+- [ ] No sub-720p footage; prefer native 1080×1920
 - [ ] Total duration: 10–30 seconds including outro
 - [ ] No black frames or flash frames at cuts
 - [ ] Cover frame exported from hook moment
+- [ ] Export: H.264 High, 1080×1920, 60fps, **12–20 Mbps** (≈16 Mbps), AAC 48kHz
 
 ## Approval
 

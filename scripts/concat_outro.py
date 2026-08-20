@@ -11,7 +11,18 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from scripts.lib.video_utils import OUTRO_PATH, ensure_outro_exists, ffmpeg_bin
+from scripts.lib.video_utils import (
+    EXPORT_AUDIO_BITRATE,
+    EXPORT_AUDIO_SAMPLE_RATE,
+    EXPORT_PROFILE,
+    EXPORT_VIDEO_BITRATE_MBPS,
+    FPS,
+    OUTRO_PATH,
+    TARGET_HEIGHT,
+    TARGET_WIDTH,
+    ensure_outro_exists,
+    ffmpeg_bin,
+)
 
 
 def concat_outro(body: Path, output: Path, outro: Path | None = None) -> None:
@@ -35,12 +46,22 @@ def concat_outro(body: Path, output: Path, outro: Path | None = None) -> None:
         list_path,
         "-c:v",
         "libx264",
+        "-profile:v",
+        EXPORT_PROFILE,
         "-pix_fmt",
         "yuv420p",
+        "-r",
+        str(FPS),
+        "-s",
+        f"{TARGET_WIDTH}x{TARGET_HEIGHT}",
+        "-b:v",
+        f"{EXPORT_VIDEO_BITRATE_MBPS}M",
         "-c:a",
         "aac",
+        "-ar",
+        str(EXPORT_AUDIO_SAMPLE_RATE),
         "-b:a",
-        "192k",
+        EXPORT_AUDIO_BITRATE,
         str(output),
     ]
     subprocess.run(cmd, check=True)

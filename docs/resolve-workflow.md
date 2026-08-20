@@ -3,7 +3,7 @@
 ## Setup (once)
 
 1. Open Resolve → New Project: **Soccer x Scripture**
-2. Project settings: Timeline resolution **1920×1080 Vertical** (1080×1920), frame rate **30fps**
+2. Project settings: Timeline resolution **1920×1080 Vertical** (1080×1920), frame rate **60fps**
 3. Save project to `../SoccerxScripture-media/resolve_projects/`
 
 ## Per-edit workflow
@@ -25,14 +25,14 @@ python scripts/build_resolve_timeline.py plans/skill_chaos_001.yaml
 This creates:
 
 - `plans/skill_chaos_001_edl.csv` — clip list with in/out points
-- `plans/skill_chaos_001_resolve.py` — Resolve scripting stub
-- `plans/skill_chaos_001_markers.csv` — text/effect markers
+- `plans/skill_chaos_001_resolve.py` — Resolve scripting stub (sets 1080×1920 @ 60fps)
+- `plans/skill_chaos_001_markers.csv` — text/effect markers (frame numbers at 60fps)
 
 ### 3. Import into Resolve
 
 **Option A — Manual (recommended for first edits)**
 
-1. Create timeline **skill_chaos_001** (1080×1920, 30fps)
+1. Create timeline **skill_chaos_001** (1080×1920, **60fps**)
 2. Open `plans/skill_chaos_001.yaml` as your shot list
 3. Drag clips from Media Pool in order; set in/out from YAML
 4. Add outro clip last: `assets/outro/outro_master_2s.mov`
@@ -63,7 +63,7 @@ echo "status: approved\nreviewed_at: $(date +%Y-%m-%d)" > plans/skill_chaos_001.
 
 ### 6. Export
 
-Deliver page → Custom → H.264, 1080×1920, 30fps, 10–12 Mbps.
+Deliver page → Custom → **H.264 High**, 1080×1920, **60fps**, **12–20 Mbps** (≈16 Mbps recommended), AAC 48kHz.
 
 Save to `export/reels/YYYY-MM/skill_chaos_001.mp4`
 
@@ -78,7 +78,7 @@ Save LUTs in `assets/brand/luts/` when finalized.
 
 ## Outro
 
-Every timeline must end with `assets/outro/outro_master_2s.mov` (2.0s, hard cut from last action).
+Every timeline must end with `assets/outro/outro_master_2s.mov` (2.0s @ 60fps, hard cut from last action).
 
 If outro is missing from export, run:
 

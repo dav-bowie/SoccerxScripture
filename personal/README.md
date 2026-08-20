@@ -7,7 +7,8 @@ Drop your raw clips and images here for the pipeline to index and edit.
 Phone clips, GoPro, anything you shot. Prefer:
 
 - **9:16 vertical** (native portrait mode)
-- 1080p or higher
+- **1080×1920** or higher (sub-720p is rejected)
+- **60fps** (indexer warns if fps ≠ 60)
 - 3–60 seconds per clip
 - Multiple takes of the same action (best for comedy edits)
 

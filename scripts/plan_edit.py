@@ -13,14 +13,25 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from scripts.lib.video_utils import (
+    EXPORT_AUDIO_SAMPLE_RATE,
+    EXPORT_BITRATE_MBPS_MAX,
+    EXPORT_BITRATE_MBPS_MIN,
+    EXPORT_PROFILE,
+    EXPORT_VIDEO_BITRATE_MBPS,
+    FPS,
     MAX_SHOT_S,
     MAX_VIDEO_DURATION,
+    MIN_SHORT_EDGE,
     MIN_SHOT_S,
     MIN_VIDEO_DURATION,
     OUTRO_DURATION,
     OUTRO_PATH,
     PLANS_DIR,
+    PREFERRED_SHORT_EDGE,
     PROJECT_ROOT,
+    QUALITY_THRESHOLD,
+    TARGET_HEIGHT,
+    TARGET_WIDTH,
     ensure_outro_exists,
 )
 
@@ -228,6 +239,7 @@ def plan_edit(profile: dict, catalog: dict, plan_id: str) -> dict:
         "status": "draft",
         "reference": profile.get("reference"),
         "reference_profile": profile.get("reference"),
+        "fps": FPS,
         "target_duration_s": round(body_duration, 2),
         "music": {
             "mood": "_".join(music.get("mood", ["hype", "masculine"])[:2]),
@@ -237,6 +249,20 @@ def plan_edit(profile: dict, catalog: dict, plan_id: str) -> dict:
         },
         "timeline": timeline,
         "quality_rules": {
+            "fps": FPS,
+            "min_resolution": [TARGET_WIDTH, TARGET_HEIGHT],
+            "min_short_edge": MIN_SHORT_EDGE,
+            "preferred_short_edge": PREFERRED_SHORT_EDGE,
+            "quality_threshold": QUALITY_THRESHOLD,
+            "export": {
+                "codec": "H.264",
+                "profile": EXPORT_PROFILE,
+                "resolution": [TARGET_WIDTH, TARGET_HEIGHT],
+                "fps": FPS,
+                "video_bitrate_mbps": EXPORT_VIDEO_BITRATE_MBPS,
+                "video_bitrate_mbps_range": [EXPORT_BITRATE_MBPS_MIN, EXPORT_BITRATE_MBPS_MAX],
+                "audio": f"AAC {EXPORT_AUDIO_SAMPLE_RATE // 1000}kHz",
+            },
             "min_shot_s": MIN_SHOT_S,
             "max_shot_s": MAX_SHOT_S,
             "no_mid_action_cuts": True,

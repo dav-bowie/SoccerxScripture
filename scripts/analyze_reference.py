@@ -21,7 +21,7 @@ from scripts.lib.analysis import (
     motion_energy_curve,
     shot_lengths,
 )
-from scripts.lib.video_utils import PROFILES_DIR, PROJECT_ROOT, save_json, video_metadata
+from scripts.lib.video_utils import FPS, PROFILES_DIR, PROJECT_ROOT, fps_near_target, save_json, video_metadata
 
 
 def analyze_reference(path: Path) -> dict:
@@ -50,12 +50,15 @@ def analyze_reference(path: Path) -> dict:
     except ValueError:
         ref_path = str(path)
 
+    fps_ok = fps_near_target(meta["fps"])
     profile = {
         "reference": ref_path,
         "duration_s": duration,
         "target_duration_s": f"{target_lo}-{target_hi}",
         "resolution": {"width": meta["width"], "height": meta["height"]},
         "fps": meta["fps"],
+        "target_fps": FPS,
+        "fps_match_target": fps_ok,
         "hook": hook,
         "cut_rhythm": {
             "cut_times_s": cut_times,
@@ -121,6 +124,13 @@ def main() -> None:
     print(f"Profile written: {out}")
     print(f"  Theme: {profile['theme']}")
     print(f"  Duration: {profile['duration_s']}s → target {profile['target_duration_s']}s")
+    print(f"  FPS: {profile['fps']} (target {profile['target_fps']})")
+    if not profile.get("fps_match_target"):
+        print(
+            f"  Warning: reference fps={profile['fps']} ≠ {FPS}; "
+            "prefer 60fps references for matching export cadence",
+            file=sys.stderr,
+        )
     print(f"  Cuts: {profile['cut_rhythm']['shot_count']} shots, avg {profile['cut_rhythm']['avg_shot_length_s']}s")
 
 
