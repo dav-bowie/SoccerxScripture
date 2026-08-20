@@ -88,21 +88,32 @@ def segment_for_slot(
 
     target_len = max(MIN_SHOT_S, min(MAX_SHOT_S, target_len))
 
-    if segments:
-        idx = min(segment_index, len(segments) - 1)
-        seg = sorted(segments, key=lambda s: s.get("score", 0), reverse=True)[idx]
+    ranked = sorted(segments, key=lambda s: s.get("score", 0), reverse=True) if segments else []
+
+    if ranked and segment_index < len(ranked):
+        seg = ranked[segment_index]
         start = seg["start"]
         end = min(start + target_len, seg["end"], duration)
         if end - start < MIN_SHOT_S:
             end = min(start + target_len, duration)
     else:
-        # Spread segments across the clip when reusing
-        step = max(target_len, duration / 6)
-        start = min(segment_index * step, max(0, duration - target_len))
-        end = min(start + target_len, duration)
+        # Exhausted peaks (or none): spread evenly across the clip timeline
+        # Offset past ranked peaks so we don't re-pick the same windows
+        usable = max(duration - target_len, 0)
+        if usable <= 0:
+            start, end = 0.0, min(target_len, duration)
+        else:
+            # Use a spaced grid; skip early windows already covered by peaks
+            n_slots = max(6, len(ranked) + 4)
+            idx = segment_index if not ranked else segment_index - len(ranked)
+            start = min((idx % n_slots) * (usable / n_slots), usable)
+            end = min(start + target_len, duration)
 
     start = round(start, 2)
     end = round(max(start + MIN_SHOT_S, end), 2)
+    if end > duration:
+        end = round(duration, 2)
+        start = round(max(0.0, end - target_len), 2)
     return start, end
 
 
@@ -130,7 +141,7 @@ def hook_text(profile: dict) -> str | None:
     return texts.get(theme, "let's go")
 
 
-def plan_edit(profile: dict, catalog: dict, plan_id: str) -> dict:
+def plan_edit(profile: dict, catalog: dict, plan_id: str, profile_path: str = "") -> dict:
     ensure_outro_exists()
 
     pattern = profile.get("cut_rhythm", {}).get("pattern", "beat_matched_cuts")
@@ -189,12 +200,53 @@ def plan_edit(profile: dict, catalog: dict, plan_id: str) -> dict:
         timeline.append(entry)
         body_duration += shot_dur
 
-    # Pad with extra beats if under minimum duration (reuse best clip)
-    while body_duration < MIN_VIDEO_DURATION - OUTRO_DURATION and clips:
+    # Pad: prefer lengthening shots before adding extras (avoids duplicate windows)
+    while body_duration < MIN_VIDEO_DURATION - OUTRO_DURATION and timeline:
+        content = [t for t in timeline if t["slot"] != "outro"]
+        if not content:
+            break
+        # Grow shortest shots toward MAX_SHOT_S first
+        grew = False
+        for entry in sorted(content, key=lambda t: t["duration_s"]):
+            if entry["duration_s"] >= MAX_SHOT_S:
+                continue
+            clip_meta = next((c for c in clips if c["path"] == entry["clip"]), None)
+            if not clip_meta:
+                continue
+            room = min(MAX_SHOT_S - entry["duration_s"], clip_meta["duration_s"] - entry["out"])
+            if room < 0.05:
+                # Try extending start earlier
+                room_back = min(MAX_SHOT_S - entry["duration_s"], entry["in"])
+                if room_back < 0.05:
+                    continue
+                entry["in"] = round(entry["in"] - room_back, 2)
+                entry["duration_s"] = round(entry["out"] - entry["in"], 2)
+                body_duration += room_back
+                grew = True
+                break
+            add = min(room, (MIN_VIDEO_DURATION - OUTRO_DURATION) - body_duration)
+            entry["out"] = round(entry["out"] + add, 2)
+            entry["duration_s"] = round(entry["out"] - entry["in"], 2)
+            body_duration += add
+            grew = True
+            break
+        if grew:
+            continue
+
+        # Fall back: add one extra beat from a fresh window
         best = max(clips, key=lambda c: c["quality_score"])
         path = best["path"]
         seg_idx = reuse_index.get(path, 0)
         start, end = segment_for_slot(best, "beat_extra", avg_shot, seg_idx)
+        # Skip if this window duplicates an existing cut
+        if any(
+            t.get("clip") == path and abs(t.get("in", -1) - start) < 0.05 and abs(t.get("out", -1) - end) < 0.05
+            for t in timeline
+        ):
+            reuse_index[path] = seg_idx + 1
+            if seg_idx > 20:
+                break
+            continue
         reuse_index[path] = seg_idx + 1
         shot_dur = end - start
         timeline.append(
@@ -208,7 +260,7 @@ def plan_edit(profile: dict, catalog: dict, plan_id: str) -> dict:
             }
         )
         body_duration += shot_dur
-        if seg_idx > 12:
+        if seg_idx > 20:
             break
 
     timeline.append(
@@ -238,7 +290,7 @@ def plan_edit(profile: dict, catalog: dict, plan_id: str) -> dict:
         "title": plan_id,
         "status": "draft",
         "reference": profile.get("reference"),
-        "reference_profile": profile.get("reference"),
+        "reference_profile": profile_path,
         "fps": FPS,
         "target_duration_s": round(body_duration, 2),
         "music": {
@@ -299,7 +351,12 @@ def main() -> None:
     profile = load_json(args.reference)
     catalog = load_json(args.catalog) if args.catalog.exists() else {"clips": []}
 
-    recipe = plan_edit(profile, catalog, args.plan_id)
+    try:
+        profile_rel = str(args.reference.resolve().relative_to(PROJECT_ROOT))
+    except ValueError:
+        profile_rel = str(args.reference)
+
+    recipe = plan_edit(profile, catalog, args.plan_id, profile_path=profile_rel)
     out = args.output or PLANS_DIR / f"{args.plan_id}.yaml"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(yaml.dump(recipe, default_flow_style=False, sort_keys=False))

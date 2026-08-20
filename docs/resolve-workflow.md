@@ -4,72 +4,64 @@
 
 1. Open Resolve → New Project: **Soccer x Scripture**
 2. Project settings: Timeline resolution **1920×1080 Vertical** (1080×1920), frame rate **60fps**
-3. Save project to `../SoccerxScripture-media/resolve_projects/`
+3. Save project outside the git repo (e.g. `../SoccerxScripture-media/resolve_projects/`)
 
-## Per-edit workflow
+## Supported path: manual assemble (Option A)
+
+This is the **production** workflow. Use the YAML + EDL as a shot list; you make the final cuts.
 
 ### 1. Generate recipe
 
 ```bash
-python scripts/run_pipeline.py plan \
-  --reference analysis/profiles/my_ref.json \
+python scripts/run_pipeline.py all \
+  --reference video_examples_to_base_off_of/my_ref.mp4 \
   --plan-id skill_chaos_001
 ```
 
-### 2. Build handoff files
+### 2. Handoff files
 
-```bash
-python scripts/build_resolve_timeline.py plans/skill_chaos_001.yaml
-```
+`python scripts/build_resolve_timeline.py plans/skill_chaos_001.yaml` creates:
 
-This creates:
+- `plans/skill_chaos_001_edl.csv` — clip list with in/out
+- `plans/skill_chaos_001_markers.csv` — text/effect markers (60fps frame numbers)
+- `plans/skill_chaos_001_resolve.py` — **import stub only** (not a full auto-editor)
 
-- `plans/skill_chaos_001_edl.csv` — clip list with in/out points
-- `plans/skill_chaos_001_resolve.py` — Resolve scripting stub (sets 1080×1920 @ 60fps)
-- `plans/skill_chaos_001_markers.csv` — text/effect markers (frame numbers at 60fps)
-
-### 3. Import into Resolve
-
-**Option A — Manual (recommended for first edits)**
+### 3. Assemble in Resolve
 
 1. Create timeline **skill_chaos_001** (1080×1920, **60fps**)
-2. Open `plans/skill_chaos_001.yaml` as your shot list
+2. Open `plans/skill_chaos_001.yaml` as the shot list
 3. Drag clips from Media Pool in order; set in/out from YAML
-4. Add outro clip last: `assets/outro/outro_master_2s.mov`
-5. Add music track (pick from Epidemic Sound using suggested search terms in recipe)
-6. Add text overlays per marker notes
-
-**Option B — Resolve scripting**
-
-1. Open Resolve
-2. Workspace → Console (or run from terminal):
-
-```bash
-/Applications/DaVinci\ Resolve/DaVinci\ Resolve.app/Contents/MacOS/DaVinci\ Resolve \
-  -script plans/skill_chaos_001_resolve.py
-```
-
-Note: Resolve must be running with a project open. The script creates a timeline and places clips if paths resolve.
+4. Add outro last: `assets/outro/outro_master_2s.mov` (generate with `python scripts/run_pipeline.py outro` if missing)
+5. Add licensed music (search terms in recipe → receipt in `assets/music/licenses/`)
+6. Add hook / verse text per markers — verse **after** the joke
 
 ### 4. Review
 
-Follow [quality-checklist.md](quality-checklist.md). Adjust cuts, music sync, and text timing.
+Follow [quality-checklist.md](quality-checklist.md).
 
 ### 5. Approve
 
 ```bash
-echo "status: approved\nreviewed_at: $(date +%Y-%m-%d)" > plans/skill_chaos_001.status
+cat > plans/skill_chaos_001.status <<'EOF'
+status: approved
+reviewed_at: YYYY-MM-DD
+note: Ready for Instagram export
+EOF
 ```
 
 ### 6. Export
 
-Deliver page → Custom → **H.264 High**, 1080×1920, **60fps**, **12–20 Mbps** (≈16 Mbps recommended), AAC 48kHz.
+Deliver → Custom → **H.264 High**, 1080×1920, **60fps**, **12–20 Mbps**, AAC 48kHz.
 
 Save to `export/reels/YYYY-MM/skill_chaos_001.mp4`
 
-## Brand LUT
+Then follow [instagram-export.md](instagram-export.md).
 
-Apply a consistent grade:
+## Option B — Resolve script (not production)
+
+The generated `*_resolve.py` script can create a timeline and **import** media when Resolve is open. It does **not** reliably place in/out points or build the finished cut. Treat it as a convenience importer only; finish the edit manually (Option A).
+
+## Brand LUT
 
 - **Day / pitch:** warm shadows, lifted greens
 - **Night / cage:** teal/orange, crushed blacks
@@ -78,10 +70,10 @@ Save LUTs in `assets/brand/luts/` when finalized.
 
 ## Outro
 
-Every timeline must end with `assets/outro/outro_master_2s.mov` (2.0s @ 60fps, hard cut from last action).
+Every timeline must end with the 2.0s **Soccer x Scripture** master at 60fps (hard cut from last action).
 
-If outro is missing from export, run:
+If a body export forgot the outro:
 
 ```bash
-python scripts/concat_outro.py export/reels/YYYY-MM/body_only.mp4
+python scripts/run_pipeline.py concat export/reels/YYYY-MM/body_only.mp4
 ```

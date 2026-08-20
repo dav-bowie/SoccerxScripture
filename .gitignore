@@ -38,6 +38,11 @@ __pycache__/
 analysis/cache/
 ../SoccerxScripture-media/
 
+# Duplicate brand dumps at repo root (canonical copies live in assets/brand/)
+/England.png
+/USmenPrayer.png
+/usmenprayworldcupap.jpg
+
 # OS / editor
 .DS_Store
 *.swp

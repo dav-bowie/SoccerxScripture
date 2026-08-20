@@ -54,6 +54,13 @@ def stage_outro() -> None:
     run([sys.executable, str(SCRIPTS / "generate_outro.py")])
 
 
+def stage_concat(body: Path, output: Path | None = None) -> None:
+    cmd = [sys.executable, str(SCRIPTS / "concat_outro.py"), str(body)]
+    if output:
+        cmd.extend(["-o", str(output)])
+    run(cmd)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Soccer x Scripture pipeline runner")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -73,7 +80,11 @@ def main() -> None:
 
     sub.add_parser("outro", help="Generate brand outro")
 
-    p_all = sub.add_parser("all", help="Run full pipeline")
+    p_concat = sub.add_parser("concat", help="Append brand outro to a body export")
+    p_concat.add_argument("body", type=Path, help="Body video without outro")
+    p_concat.add_argument("-o", "--output", type=Path, help="Final output path")
+
+    p_all = sub.add_parser("all", help="Run full pipeline through Resolve handoff")
     p_all.add_argument("--reference", type=Path, required=True)
     p_all.add_argument("--personal", type=Path, default=PROJECT_ROOT / "personal" / "video")
     p_all.add_argument("--plan-id", type=str, default="edit_001")
@@ -90,13 +101,16 @@ def main() -> None:
         stage_build(args.recipe)
     elif args.command == "outro":
         stage_outro()
+    elif args.command == "concat":
+        stage_concat(args.body, args.output)
     elif args.command == "all":
         stage_outro()
         profile = stage_analyze(args.reference)
         stage_index(args.personal)
         recipe = stage_plan(profile, args.plan_id)
         stage_build(recipe)
-        print("\n✓ Pipeline complete. Review recipe in plans/ and open Resolve handoff files.")
+        print("\n✓ Pipeline complete. Review recipe in plans/ and assemble manually in Resolve.")
+        print("  After export, if outro is missing: python scripts/run_pipeline.py concat <body.mp4>")
 
 
 if __name__ == "__main__":
